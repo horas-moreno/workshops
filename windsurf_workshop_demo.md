@@ -49,8 +49,19 @@ _Checklist de aceptación, decisiones técnicas, etc._
 **🎬 Demo Contexto**
 
 1. Abre `docs/architecture.mermaid` y un bug en `AuthService.ts`.
-2. Selecciona el bug → `Cmd+L` → escribe “Explain and fix”.
-3. Muestra cómo Cascade lo arregla; luego pregunta **“Continue”** para ver siguiente error sin repetir contexto.
+2. Selecciona el bug → `Cmd+L` → escribe "Explain and fix".
+3. Muestra cómo Cascade lo arregla; luego pregunta **"Continue"** para ver siguiente error sin repetir contexto.
+
+**Ejemplo avanzado con múltiples archivos:**
+```
+@AuthService.ts @UserModel.ts
+¿Cómo puedo optimizar esta función para manejar autenticación de forma más segura?
+```
+
+**Manejo de contexto implícito:**
+- Cascade detecta automáticamente archivos relacionados
+- Muestra el contexto cargado en la vista previa
+- Permite ajustar el contexto antes de enviar
 
 ---
 
@@ -71,7 +82,18 @@ Windsurf ofrece:
 3. Escribe contenido (bullet points, fragmentos de código).
 4. Guarda — aparece en el Rules Panel.
 
-**Pro tip:** comando `/generate-windsurf-rule` para que la IA proponga la regla basada en tus últimos commits.
+**Pro tip:** comando `/generate-windsurf-rule` para que la IA proponga la regla basada en tus últimos commits.
+
+**Verificación de reglas activas:**
+- `Cmd+Shift+P` → "Windsurf: Show Active Rules"
+- Muestra qué reglas están aplicándose al archivo actual
+- Permite habilitar/deshabilitar temporalmente reglas
+
+**Creación de memorias manuales:**
+```
+/memory add "El proyecto usa TypeScript con estricto null checking"
+/memory add "El prefijo para componentes es 'App'"
+```
 
 **🎬 Demo Rules**
 
@@ -102,12 +124,30 @@ _Ejemplo `jwt-setup.workflow.md`:_
 
 Puedes seguir usando `tasks.md` y `status.md` como en Cursor; Cascade lee Markdown igual de bien.
 
+**Ejemplo de workflow con parámetros:**
+```markdown
+# code-review.workflow.md
+## steps
+1. Revisa los cambios en {{file}}
+2. Verifica que sigan las guías de estilo
+3. Sugiere mejoras de rendimiento
+```
+
+**Pasaje de parámetros:**
+```
+/workflow code-review file=src/components/Button.tsx
+```
+
 > **Script Bash**: el mismo `cursor_task_manager.sh` funciona (solo cambia rutas al directorio).
 
 **🎬 Demo Workflows**
 
 1. Ejecuta `/jwt-setup` → observa pasos.
 2. Pide que Cascade actualice `status.md` con casillas `[x]`.
+3. Encadena workflows con salida como entrada:
+   ```
+   /workflow generate-tests | /workflow optimize-tests
+   ```
 
 ---
 
@@ -119,7 +159,10 @@ Activa en **Settings → Features → Web & Docs**.
 | ----------------------- | ----------------------------------------- |
 | Búsqueda web automática | “¿Qué significa error 42 en Postgres?”    |
 | `@web` forzado          | `@web Mejor puntuación de bcrypt`         |
+| `-site:example.com`     | Excluir dominios de la búsqueda           |
+| `filetype:md`           | Buscar solo en archivos Markdown          |
 | Indexar doc interna     | `@docs https://intra.company.com/libX.md` |
+| Búsqueda avanzada      | `@web "error handling" site:github.com`  |
 
 **🎬 Demo Docs**
 
@@ -130,7 +173,18 @@ Indexa `https://docs.example.com/api` y pregunta `@docs/api ¿Cómo inicializo e
 ## 5. **Multi‑workspace & microservicios**
 
 - **Nueva ventana**: `File → New Window` para aislar contextos.
-- **Multi‑root**: `File → Add Folder to Workspace…` (indexa ambos).
+- **Multi‑root**: `File → Add Folder to Workspace…` (indexa ambos).
+- **Configuración compartida**: Crea un archivo `.windsurf/shared_config.json`
+  ```json
+  {
+    "rules": ["common-rules/*.md"],
+    "mcpServers": ["filesystem", "memory"]
+  }
+  ```
+- **Manejo de dependencias**:
+  ```
+  /add-dependency frontend/package.json backend/package.json
+  ```
 - Rules aplican por carpeta mediante globs.
 
 **🎬 Demo**
@@ -153,11 +207,30 @@ Backend + Frontend: pide a Cascade alinear URLs REST; muestra reglas distintas
 
 ### MCP (Macro Command Processor)
 
-Permite ejecutar pruebas, levantar contenedores o publicar previews directamente desde el chat. Actívalo en **Settings → Tools → MCP** y referencia comandos shell en tu prompt:
+Permite ejecutar pruebas, levantar contenedores o publicar previews directamente desde el chat. Actívalo en **Settings → Tools → MCP** y referencia comandos shell en tu prompt:
 
+**Ejemplos de MCP:**
 ```
 /// Run `npm test` and explain failures.
 ///
+
+/// Start development server and open browser
+/// @mcp run:dev
+///
+
+/// Deploy to staging
+/// @mcp deploy --env=staging
+///
+```
+
+**Creación de atajos personalizados:**
+1. `Cmd+,` → Keyboard Shortcuts
+2. Busca "windsurf.commands"
+3. Asigna atajos a comandos frecuentes
+
+**Combinación de herramientas:**
+```
+/mode refactor --tools=terminal,search --model=gpt-4
 ```
 
 **🎬 Demo Modes**
@@ -169,8 +242,27 @@ Permite ejecutar pruebas, levantar contenedores o publicar previews directamente
 
 ## Conclusión
 
-Con **Cascade, Memories & Rules, Workflows, Docs Search y Custom Modes**, Windsurf actúa como un miembro más del equipo, entendiendo tu codebase y acelerando la entrega de código limpio, documentado y testeado.  
-Esta demo equipara las ventajas de Cursor, pero sobre la plataforma Windsurf.
+## Resumen de Atajos Útiles
+
+| Comando                     | Acción                                 |
+|-----------------------------|---------------------------------------|
+| `Cmd+L`                     | Abrir Cascade con selección actual    |
+| `Cmd+Shift+P`               | Paleta de comandos                   |
+| `Cmd+K Cmd+R`               | Mostar reglas activas                |
+| `Cmd+Shift+F`               | Búsqueda en todo el workspace        |
+| `Cmd+P`                     | Búsqueda rápida de archivos          |
+| `Cmd+Shift+E`               | Explorador de archivos               |
+| `Cmd+B`                     | Alternar barra lateral               |
+| `Cmd+\`                     | Dividir editor                       |
+
+## Recursos Adicionales
+
+- [Documentación oficial de Windsurf](https://docs.windsurf.dev)
+- [Guía de migración desde Cursor](https://docs.windsurf.dev/guides/migrating-from-cursor)
+- [Foro de la comunidad](https://community.windsurf.dev)
+
+Con **Cascade, Memories & Rules, Workflows, Docs Search y Custom Modes**, Windsurf actúa como un miembro más del equipo, entendiendo tu codebase y acelerando la entrega de código limpio, documentado y testeado.  
+Esta demo equipara las ventajas de Cursor, pero sobre la plataforma Windsurf, ofreciendo una experiencia de desarrollo más fluida y personalizable.
 
 #Notas:
 
