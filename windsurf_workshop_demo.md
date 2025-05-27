@@ -9,12 +9,9 @@ Esta guía paso a paso sirve como **guion (60 min)** para una demo práctica e
 3. **Workflows + Gestión de tareas** – definir pasos repetibles y mantener estado.
 4. **Web & Docs Search** – añadir documentación interna o externa.
 5. **Múltiples workspaces / microservicios** – trabajo con varios repos en paralelo.
-6. **Custom Modes, Modelo y MCP** – perfiles a medida según la tarea.
+6. **Modelo y MCP** – perfiles a medida según la tarea.
 
 Cada apartado trae **ejemplos, comandos y demos** para pantalla compartida.
-
-> **Nota:** La estructura y ejemplos reflejan la guía de Cursor provista fileciteturn0file0  
-> ajustados al ecosistema Windsurf.
 
 ---
 
@@ -153,19 +150,17 @@ Puedes seguir usando `tasks.md` y `status.md` como en Cursor; Cascade lee Markdo
 
 ## 4. **Web & Docs Search**
 
-Activa en **Settings → Features → Web & Docs**.
-
 | Uso                     | Ejemplo                                   |
 | ----------------------- | ----------------------------------------- |
 | Búsqueda web automática | “¿Qué significa error 42 en Postgres?”    |
 | `@web` forzado          | `@web Mejor puntuación de bcrypt`         |
-| `-site:example.com`     | Excluir dominios de la búsqueda           |
 | `filetype:md`           | Buscar solo en archivos Markdown          |
 | Indexar doc interna     | `@docs https://intra.company.com/libX.md` |
 | Búsqueda avanzada      | `@web "error handling" site:github.com`  |
 
 **🎬 Demo Docs**
 
+Aca haria una prueba con uno de los docs ya indexados que figuran al hacer @docs.
 Indexa `https://docs.example.com/api` y pregunta `@docs/api ¿Cómo inicializo el cliente?`.
 
 ---
@@ -192,54 +187,6 @@ Indexa `https://docs.example.com/api` y pregunta `@docs/api ¿Cómo inicializo e
 Backend + Frontend: pide a Cascade alinear URLs REST; muestra reglas distintas por carpeta.
 
 ---
-
-## 6. **Custom Modes, Modelo y MCP**
-
-- Menú bajo el input → elegir **LLM** (GPT‑4o, Claude 3, Mistral, etc.).
-- `Customizations → Modes → +` para crear un **Modo**:
-
-| Campo        | Ejemplo (“Debug Mode”)                       |
-| ------------ | -------------------------------------------- |
-| Icono        | 🐞                                           |
-| Atajo        | `Ctrl+Shift+D`                               |
-| Herramientas | Terminal, Search, No auto‑apply              |
-| Instrucción  | “Explica paso a paso antes de tocar código.” |
-
-### MCP (Macro Command Processor)
-
-Permite ejecutar pruebas, levantar contenedores o publicar previews directamente desde el chat. Actívalo en **Settings → Tools → MCP** y referencia comandos shell en tu prompt:
-
-**Ejemplos de MCP:**
-```
-/// Run `npm test` and explain failures.
-///
-
-/// Start development server and open browser
-/// @mcp run:dev
-///
-
-/// Deploy to staging
-/// @mcp deploy --env=staging
-///
-```
-
-**Creación de atajos personalizados:**
-1. `Cmd+,` → Keyboard Shortcuts
-2. Busca "windsurf.commands"
-3. Asigna atajos a comandos frecuentes
-
-**Combinación de herramientas:**
-```
-/mode refactor --tools=terminal,search --model=gpt-4
-```
-
-**🎬 Demo Modes**
-
-1. Cambia a “Debug Mode”, selecciona test roto → pide explicación.
-2. Cambia a “Refactor Mode” y solicita limpieza de la función.
-
----
-
 ## Conclusión
 
 ## Resumen de Atajos Útiles
@@ -261,7 +208,7 @@ Permite ejecutar pruebas, levantar contenedores o publicar previews directamente
 - [Guía de migración desde Cursor](https://docs.windsurf.dev/guides/migrating-from-cursor)
 - [Foro de la comunidad](https://community.windsurf.dev)
 
-Con **Cascade, Memories & Rules, Workflows, Docs Search y Custom Modes**, Windsurf actúa como un miembro más del equipo, entendiendo tu codebase y acelerando la entrega de código limpio, documentado y testeado.  
+Con **Cascade, Memories & Rules, Workflows y Docs Search**, Windsurf actúa como un miembro más del equipo, entendiendo tu codebase y acelerando la entrega de código limpio, documentado y testeado.  
 Esta demo equipara las ventajas de Cursor, pero sobre la plataforma Windsurf, ofreciendo una experiencia de desarrollo más fluida y personalizable.
 
 #Notas:
